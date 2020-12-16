@@ -8,13 +8,13 @@ add_user() {
   read -p "Username:" username
   echo "Password:"
   read -s password
-  adduser $username
+  sudo adduser $username
   if [ "$?" = "0" ]; then
-    echo $password | passwd --stdin $username
-    read -p "set this user as root?(y)" setroot
+    echo $password | sudo passwd --stdin $username
+    read -p "set this user as sudoer?(y)" setroot
     if [[ -n $setroot || $setroot == "y" || $setroot == "Y" ]]; then
-      tee /etc/sudoers.d/$username <<< $username' ALL=(ALL) ALL'
-      chmod 440 /etc/sudoers.d/$username
+      sudo tee /etc/sudoers.d/$username <<< $username' ALL=(ALL) ALL'
+      sudo chmod 440 /etc/sudoers.d/$username
       echo "root user created !!!"
     else
       echo "user created !!!"
