@@ -77,9 +77,9 @@ print_systeminfo() {
 }
 
 help() {
-  echo "1) add_user	            4) enable_root_login"
-  echo "2) del_user	            5) exit"
-  echo "3) disable_root_login   6) help:"
+  echo -e "1) add_user\t\t4) enable_root_login"
+  echo -e "2) del_user\t\t5) exit"
+  echo -e "3) disable_root_login   6) help:"
 }
 
 main() {
