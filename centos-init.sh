@@ -13,7 +13,7 @@ add_user() {
     echo $password | sudo passwd --stdin $username
     read -p "set this user as sudoer?(y)" setroot
     if [[ -n $setroot || $setroot == "y" || $setroot == "Y" ]]; then
-      sudo tee /etc/sudoers.d/$username <<< $username' ALL=(ALL) ALL'
+      sudo tee /etc/sudoers.d/$username <<<$username' ALL=(ALL) ALL'
       sudo chmod 440 /etc/sudoers.d/$username
       echo "root user created !!!"
     else
@@ -21,6 +21,18 @@ add_user() {
     fi
   else
     echo "cannot create user" 1>&2
+    exit 1
+  fi
+}
+
+del_user() {
+  echo "deleting add user ..."
+  read -p "Username:" username
+  sudo userdel -r $username
+  if [ "$?" = "0" ]; then
+    echo "user $username has been deleted !!!"
+  else
+    echo "cannot delete user" 1>&2
     exit 1
   fi
 }
@@ -46,22 +58,26 @@ print_systeminfo() {
 
 help() {
   echo "1) add_user"
-  echo "2) exit"
-  echo "3) help:"
+  echo "2) del_user"
+  echo "3) exit"
+  echo "4) help:"
 }
 
 main() {
   print_systeminfo
-  centos_funcs="add_user exit help"
+  centos_funcs="add_user del_user exit help"
   select centos_func in $centos_funcs:; do
     case $REPLY in
     1)
       add_user
       ;;
     2)
-      exit
+      del_user
       ;;
     3)
+      exit
+      ;;
+    4)
       help
       ;;
     *)
