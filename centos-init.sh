@@ -27,6 +27,7 @@ add_user() {
 
 del_user() {
   echo "deleting add user ..."
+  cat /etc/passwd|grep -v nologin|grep -v halt|grep -v shutdown|awk -F":" '{ print $1"|"$3"|"$4 }'|more
   read -p "Username:" username
   sudo userdel -r $username
   if [ "$?" = "0" ]; then
