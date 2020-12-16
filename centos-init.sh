@@ -66,17 +66,21 @@ disable_root_login() {
   sudo systemctl restart sshd
 }
 
+enable_root_login() {
+  sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
+  sudo sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+  sudo systemctl restart sshd
+}
+
 help() {
-  echo "1) add_user"
-  echo "2) del_user"
-  echo "3) disable_root_login"
-  echo "4) exit"
-  echo "5) help:"
+  echo "1) add_user	            4) enable_root_login"
+  echo "2) del_user	            5) exit"
+  echo "3) disable_root_login   6) help:"
 }
 
 main() {
   print_systeminfo
-  centos_funcs="add_user del_user exit help"
+  centos_funcs="add_user del_user disable_root_login enable_root_login exit help"
   select centos_func in $centos_funcs:; do
     case $REPLY in
     1)
@@ -92,9 +96,13 @@ main() {
       help
       ;;
     4)
-      exit
+      enable_root_login
+      help
       ;;
     5)
+      exit
+      ;;
+    6)
       help
       ;;
     *)
