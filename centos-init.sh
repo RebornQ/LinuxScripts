@@ -26,7 +26,7 @@ add_user() {
 }
 
 del_user() {
-  echo "deleting add user ..."
+  echo "starting del user ..."
   cat /etc/passwd | grep -v nologin | grep -v halt | grep -v shutdown | awk -F":" '{ print $1"|"$3"|"$4 }' | more
   read -p "Username:" username
   read -p "Confirm: Do you really want to del this user? (y)" del
