@@ -41,6 +41,22 @@ del_user() {
   fi
 }
 
+install_software() {
+  echo "starting install software ..."
+  yum install epel-release -y
+  yum update -y
+  yum install git wget screen nmap vim htop iftop iotop zip telnet nano -y
+  echo "software installed !!!"
+}
+
+install_oh_my_zsh(){
+  echo "starting install oh_my_zsh ..."
+  yum -y install zsh
+  chsh -s /bin/zsh
+  sh -c "$(wget -O- https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh/tools/install.sh)"
+  echo "oh_my_zsh installed !!!"
+}
+
 disable_root_login() {
   echo "starting disable root login ..."
   sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
@@ -58,7 +74,7 @@ enable_root_login() {
 }
 
 print_systeminfo() {
-  echo "**********************************"
+  echo "****************************************"
   echo "Powered by Reborn"
   echo "Email: ren.xiaoyao@gmail.com"
   echo "Hostname:" $(hostname)
@@ -73,18 +89,21 @@ print_systeminfo() {
   echo "Memory:" $(free -m | grep Mem | awk '{ print $2 }') "M"
   echo "Swap: " $(free -m | grep Swap | awk '{ print $2 }') "M"
   echo "Kernel version: " $(cat /etc/redhat-release)
-  echo "**********************************"
+  echo "****************************************"
 }
 
 help() {
-  echo -e "1) add_user\t\t4) enable_root_login"
-  echo -e "2) del_user\t\t5) exit"
-  echo -e "3) disable_root_login   6) help:"
+  echo -e "1) add_user\t\t4) enable_root_login\t\t7) exit"
+  echo -e "2) del_user\t\t5) install_software\t\t8) help:"
+  echo -e "3) disable_root_login   6) install_oh_my_zsh"
 }
 
 main() {
   print_systeminfo
-  centos_funcs="add_user del_user disable_root_login enable_root_login exit help"
+  centos_funcs="add_user del_user
+  disable_root_login enable_root_login
+  install_software install_oh_my_zsh
+  exit help"
   select centos_func in $centos_funcs:; do
     case $REPLY in
     1)
@@ -104,9 +123,17 @@ main() {
       help
       ;;
     5)
-      exit
+      install_software
+      help
       ;;
     6)
+      install_oh_my_zsh
+      help
+      ;;
+    7)
+      exit
+      ;;
+    8)
       help
       ;;
     *)
