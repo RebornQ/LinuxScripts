@@ -6,7 +6,8 @@
 add_user() {
   echo "starting add user ..."
   read -p "Username:" username
-  read -s "Password:" password
+  echo "Password:"
+  read -s password
   adduser $username
   if [ "$?" = "0" ]; then
     echo $password | passwd --stdin $username
