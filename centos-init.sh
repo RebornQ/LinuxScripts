@@ -43,15 +43,15 @@ del_user() {
 
 install_software() {
   echo "starting install software ..."
-  yum install epel-release -y
-  yum update -y
-  yum install git wget screen nmap vim htop iftop iotop zip telnet nano -y
+  sudo yum install epel-release -y
+  sudo yum update -y
+  sudo yum install git wget screen nmap vim htop iftop iotop zip telnet nano -y
   echo "software installed !!!"
 }
 
 install_oh_my_zsh(){
   echo "starting install oh_my_zsh ..."
-  yum -y install zsh
+  sudo yum -y install zsh
   chsh -s /bin/zsh
   sh -c "$(wget -O- https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh/tools/install.sh)"
   echo "oh_my_zsh installed !!!"
