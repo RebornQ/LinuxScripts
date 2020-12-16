@@ -74,7 +74,7 @@ enable_root_login() {
 }
 
 print_systeminfo() {
-  echo "****************************************"
+  echo "******************************************************"
   echo "Powered by Reborn"
   echo "Email: ren.xiaoyao@gmail.com"
   echo "Hostname:" $(hostname)
@@ -89,7 +89,7 @@ print_systeminfo() {
   echo "Memory:" $(free -m | grep Mem | awk '{ print $2 }') "M"
   echo "Swap: " $(free -m | grep Swap | awk '{ print $2 }') "M"
   echo "Kernel version: " $(cat /etc/redhat-release)
-  echo "****************************************"
+  echo "******************************************************"
 }
 
 help() {
