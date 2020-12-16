@@ -60,11 +60,18 @@ print_systeminfo() {
   echo "**********************************"
 }
 
+disable_root_login() {
+  sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
+  sudo sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
+  sudo systemctl restart sshd
+}
+
 help() {
   echo "1) add_user"
   echo "2) del_user"
-  echo "3) exit"
-  echo "4) help:"
+  echo "3) disable_root_login"
+  echo "4) exit"
+  echo "5) help:"
 }
 
 main() {
@@ -81,9 +88,13 @@ main() {
       help
       ;;
     3)
-      exit
+      disable_root_login
+      help
       ;;
     4)
+      exit
+      ;;
+    5)
       help
       ;;
     *)
