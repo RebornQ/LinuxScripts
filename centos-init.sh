@@ -11,7 +11,7 @@ add_user() {
   sudo adduser $username
   if [ "$?" = "0" ]; then
     echo $password | sudo passwd --stdin $username
-    read -p "set this user as sudoer?(y)" setroot
+    read -p "set this user as sudoer? (y)" setroot
     if [[ -n $setroot || $setroot == "y" || $setroot == "Y" ]]; then
       sudo tee /etc/sudoers.d/$username <<<$username' ALL=(ALL) ALL'
       sudo chmod 440 /etc/sudoers.d/$username
@@ -27,14 +27,17 @@ add_user() {
 
 del_user() {
   echo "deleting add user ..."
-  cat /etc/passwd|grep -v nologin|grep -v halt|grep -v shutdown|awk -F":" '{ print $1"|"$3"|"$4 }'|more
+  cat /etc/passwd | grep -v nologin | grep -v halt | grep -v shutdown | awk -F":" '{ print $1"|"$3"|"$4 }' | more
   read -p "Username:" username
-  sudo userdel -r $username
-  if [ "$?" = "0" ]; then
-    echo "user $username has been deleted !!!"
-  else
-    echo "cannot delete user" 1>&2
-    exit 1
+  read -p "Confirm: Do you really want to del this user? (y)" del
+  if [[ -n $del || $del == "y" || $del == "Y" ]]; then
+    sudo userdel -r $username
+    if [ "$?" = "0" ]; then
+      echo "user $username has been deleted !!!"
+    else
+      echo "cannot delete user" 1>&2
+      exit 1
+    fi
   fi
 }
 
