@@ -74,9 +74,11 @@ main() {
     case $REPLY in
     1)
       add_user
+      help
       ;;
     2)
       del_user
+      help
       ;;
     3)
       exit
