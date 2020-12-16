@@ -41,6 +41,22 @@ del_user() {
   fi
 }
 
+disable_root_login() {
+  echo "starting disable root login ..."
+  sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
+  sudo sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
+  sudo systemctl restart sshd
+  echo "your sshd_config.PermitRootLogin is set to no"
+}
+
+enable_root_login() {
+  echo "starting enable root login ..."
+  sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
+  sudo sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
+  sudo systemctl restart sshd
+  echo "your sshd_config.PermitRootLogin is set to yes"
+}
+
 print_systeminfo() {
   echo "**********************************"
   echo "Powered by Reborn"
@@ -58,18 +74,6 @@ print_systeminfo() {
   echo "Swap: " $(free -m | grep Swap | awk '{ print $2 }') "M"
   echo "Kernel version: " $(cat /etc/redhat-release)
   echo "**********************************"
-}
-
-disable_root_login() {
-  sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
-  sudo sed -i "s/.*PermitRootLogin.*/PermitRootLogin no/g" /etc/ssh/sshd_config
-  sudo systemctl restart sshd
-}
-
-enable_root_login() {
-  sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_bak
-  sudo sed -i "s/.*PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config
-  sudo systemctl restart sshd
 }
 
 help() {
